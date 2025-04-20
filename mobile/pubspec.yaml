@@ -36,6 +36,8 @@ dependencies:
   google_fonts: ^6.1.0
   equatable: ^2.0.5
   dartz: ^0.10.1
+  http: ^1.1.0
+  flutter_dotenv: ^5.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -63,3 +65,4 @@ flutter:
     - assets/images/translation.png
     - assets/images/language.png
     - assets/images/google_icon.png
+    - .env

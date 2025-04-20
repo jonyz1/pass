@@ -19,19 +19,19 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, User>> signUp(
     String email,
     String password,
-    String fullName,
+    String username,
   ) async {
     try {
       final token = await remoteDataSource.signUp(
-        fullName: fullName,
+        username: username,
         email: email,
         password: password,
       );
 
-      // You may construct a User from token or simulate one for now
+      // Create a user from the token and username
       final user = User(
         id: token, // using token as ID for now
-        fullName: fullName,
+        username: username,
         email: email,
       );
 

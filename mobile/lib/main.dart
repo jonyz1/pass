@@ -15,22 +15,21 @@ import 'features/onboarding/presentation/pages/onboarding_page.dart';
 
 import 'injection_container.dart' as di;
 
-void main() {
-  di.init();
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LoginCubit>(
-          create: (_) => di.sl<LoginCubit>(),
-        ),
-        BlocProvider<SignUpBloc>(
-          create: (_) => di.sl<SignUpBloc>(),
-        ),
+        BlocProvider(create: (_) => di.sl<LoginCubit>()),
+        BlocProvider(create: (_) => di.sl<SignUpBloc>()),
         BlocProvider<OnboardingBloc>(
           create: (_) => di.sl<OnboardingBloc>(), // Add OnboardingBloc here
         ),

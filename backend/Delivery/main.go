@@ -13,6 +13,8 @@ import (
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"golang.ngrok.com/ngrok"
+	"golang.ngrok.com/ngrok/config"
 )
 
 func main() {
@@ -26,6 +28,12 @@ func main() {
 	mongoURI := os.Getenv("MONGO_URI")
 	if mongoURI == "" {
 		log.Fatal("MONGO_URI is not set in the .env file")
+	}
+
+	// Get ngrok auth token from environment variables
+	ngrokToken := os.Getenv("NGROK_AUTH_TOKEN")
+	if ngrokToken == "" {
+		log.Fatal("NGROK_AUTH_TOKEN is not set in the .env file")
 	}
 
 	// Connect to MongoDB
@@ -58,9 +66,20 @@ func main() {
 	routers.SetupUserRoutes(r, userController)
 	routers.SetupFlightRoutes(r, flightController)
 
-	// Start the server
-	log.Println("Server is running at :8080")
-	if err := r.Run(":8080"); err != nil {
+	// Start ngrok tunnel
+	ctx := context.Background()
+	tunnel, err := ngrok.Listen(ctx,
+		config.HTTPEndpoint(),
+		ngrok.WithAuthtoken(ngrokToken),
+	)
+	if err != nil {
+		log.Fatalf("Failed to start ngrok tunnel: %v", err)
+	}
+	log.Printf("ngrok tunnel started at: %s", tunnel.URL())
+
+	// Start the server through ngrok
+	log.Println("Server is running through ngrok")
+	if err := r.RunListener(tunnel); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }

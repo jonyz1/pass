@@ -16,14 +16,14 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
 
-  final fullNameController = TextEditingController();
+  final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
-    fullNameController.dispose();
+    usernameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
@@ -32,7 +32,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   void _onRegister(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      final fullName = fullNameController.text.trim();
+      final username = usernameController.text.trim();
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
       final confirmPassword = confirmPasswordController.text.trim();
@@ -47,7 +47,7 @@ class _SignUpFormState extends State<SignUpForm> {
       // Dispatch the sign up event to your BLoC
       context.read<SignUpBloc>().add(
             SignUpSubmitted(
-              fullName: fullName,
+              username: username,
               email: email,
               password: password,
             ),
@@ -68,8 +68,11 @@ class _SignUpFormState extends State<SignUpForm> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Registration successful!")),
           );
-          // You might want to navigate to another screen here
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen()));
+          // Navigate to login page after successful registration
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => LoginPage()),
+          );
         }
       },
       child: Form(
@@ -111,11 +114,11 @@ class _SignUpFormState extends State<SignUpForm> {
             const SizedBox(height: 32),
             _InputField(
               icon: Icons.person,
-              hint: "Full Name",
-              controller: fullNameController,
+              hint: "Username",
+              controller: usernameController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your full name';
+                  return 'Please enter your username';
                 }
                 return null;
               },
