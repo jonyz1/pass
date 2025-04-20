@@ -37,6 +37,10 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return Right(user);
     } catch (e) {
+      // If it's a specific error about email existing, return that
+      if (e.toString().contains('Email already exists')) {
+        return Left(ServerFailure('Email already exists'));
+      }
       return Left(ServerFailure(e.toString()));
     }
   }

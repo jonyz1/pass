@@ -31,8 +31,23 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         'email': email,
         'password': password,
       });
-      return response['token'];
+      
+      // Check if the response contains a token
+      if (response['token'] != null) {
+        return response['token'];
+      }
+      
+      // If no token but registration was successful
+      if (response['message'] == 'User registered successfully') {
+        return 'registration_successful';
+      }
+      
+      throw Exception('Unexpected response format');
     } catch (e) {
+      // If the error is about user already existing
+      if (e.toString().contains('user with this email already exists')) {
+        throw Exception('Email already exists');
+      }
       throw Exception('Failed to sign up: ${e.toString()}');
     }
   }

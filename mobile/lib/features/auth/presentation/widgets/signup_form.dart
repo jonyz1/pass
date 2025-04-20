@@ -61,12 +61,17 @@ class _SignUpFormState extends State<SignUpForm> {
       listener: (context, state) {
         if (state is SignUpFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+            ),
           );
         } else if (state is SignUpSuccess) {
-          // Handle successful sign up
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Registration successful!")),
+            const SnackBar(
+              content: Text("Registration successful!"),
+              backgroundColor: Colors.green,
+            ),
           );
           // Navigate to login page after successful registration
           Navigator.pushReplacement(
