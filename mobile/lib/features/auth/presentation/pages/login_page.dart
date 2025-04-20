@@ -126,9 +126,6 @@ class LoginPage extends StatelessWidget {
                                   emailController.text,
                                   passwordController.text,
                                 );
-
-                            // Navigate to flights/detail after login
-                            Navigator.pushNamed(context, '/flights/detail');
                           },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),

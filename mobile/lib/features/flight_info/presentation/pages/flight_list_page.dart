@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/core/theme/app_colors.dart';
+import 'package:mobile/features/flight_info/presentation/pages/create_flight_page.dart';
 
-class FlightListPage extends StatelessWidget {
+class FlightListPage extends StatefulWidget {
   const FlightListPage({super.key});
+
+  @override
+  State<FlightListPage> createState() => _FlightListPageState();
+}
+
+class _FlightListPageState extends State<FlightListPage> {
+  int _selectedIndex = 0;
+  final List<Map<String, dynamic>> _flights = []; // This will be populated from API
 
   @override
   Widget build(BuildContext context) {
@@ -33,31 +42,99 @@ class FlightListPage extends StatelessWidget {
               ],
             ),
             SizedBox(height: 16),
-            // TODO: ListView.builder for actual flights
-            ListTile(
-              leading: Icon(Icons.message, color: Colors.white),
-              title: Text("My First Trip to USA",
-                  style: TextStyle(color: Colors.white)),
-              subtitle: Text("Ethiopia - USA\nMar 28, 2025",
-                  style: TextStyle(color: Colors.white70)),
-              trailing: IconButton(
-                icon: Icon(Icons.delete, color: Colors.redAccent),
-                onPressed: () {},
-              ),
+            Expanded(
+              child: _flights.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.flight_takeoff,
+                            size: 64,
+                            color: Colors.white70,
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            'No flights yet',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Tap the + button to create your first flight',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: _flights.length,
+                      itemBuilder: (context, index) {
+                        final flight = _flights[index];
+                        return Card(
+                          color: Colors.grey[900],
+                          margin: EdgeInsets.only(bottom: 8),
+                          child: ListTile(
+                            leading: Icon(Icons.flight_takeoff, color: Colors.white),
+                            title: Text(
+                              flight['title'] ?? 'Untitled Flight',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            subtitle: Text(
+                              '${flight['fromCountry']} - ${flight['toCountry']}\n${flight['date']}',
+                              style: TextStyle(color: Colors.white70),
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete, color: Colors.redAccent),
+                              onPressed: () {
+                                // TODO: Implement delete functionality
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        onPressed: () {},
-        child: Icon(Icons.add),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.white,
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreateFlightPage()),
+            );
+          } else {
+            setState(() {
+              _selectedIndex = index;
+            });
+          }
+        },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'Create',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
       ),
     );

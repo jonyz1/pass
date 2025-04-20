@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/core/theme/app_colors.dart';
+import 'package:mobile/features/flight_info/presentation/pages/create_flight_page.dart';
 
-class FlightEmptyPage extends StatelessWidget {
+class FlightEmptyPage extends StatefulWidget {
   const FlightEmptyPage({super.key});
+
+  @override
+  State<FlightEmptyPage> createState() => _FlightEmptyPageState();
+}
+
+class _FlightEmptyPageState extends State<FlightEmptyPage> {
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +24,7 @@ class FlightEmptyPage extends StatelessWidget {
           SizedBox(height: 16),
           Text(
             "No Flight Details Yet",
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white, fontSize: 20),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8),
@@ -27,24 +35,38 @@ class FlightEmptyPage extends StatelessWidget {
             ),
           ),
           Spacer(),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: FloatingActionButton(
-                onPressed: () {},
-                backgroundColor: Colors.blue,
-                child: Icon(Icons.add),
-              ),
-            ),
-          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.white,
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreateFlightPage()),
+            );
+          } else {
+            setState(() {
+              _selectedIndex = index;
+            });
+          }
+        },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'Create',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
       ),
     );
