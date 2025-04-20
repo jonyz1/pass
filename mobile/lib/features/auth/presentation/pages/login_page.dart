@@ -161,16 +161,32 @@ class LoginPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _socialButton(FontAwesomeIcons.google, 'Google'),
-                          const SizedBox(width: 10),
-                          _socialButton(FontAwesomeIcons.facebookF, 'Facebook'),
-                          const SizedBox(width: 10),
-                          _socialButton(FontAwesomeIcons.apple, 'Apple'),
-                        ],
-                      ),
-                    ],
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.facebook, color: Colors.blue, size: 36),
+              onPressed: () {
+                // Handle Facebook sign in
+                // context.read<SignUpBloc>().add(SignInWithFacebook());
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.apple, color: AppColors.textColor, size: 36),
+              onPressed: () {
+                // Handle Apple sign in
+                // context.read<SignUpBloc>().add(SignInWithApple());
+              },
+            ),
+            IconButton(
+              icon: Image.asset('assets/images/google_icon.png', width: 25),
+              onPressed: () {
+                // Handle Google sign in
+                // context.read<SignUpBloc>().add(SignInWithGoogle());
+              },
+              ),
+        ],
+      )
+                      ],
                   );
                 },
               ),
