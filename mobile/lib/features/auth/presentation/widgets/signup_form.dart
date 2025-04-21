@@ -97,7 +97,7 @@ class _SignUpFormState extends State<SignUpForm> {
             Row(
               children: [
                 Text(
-                  "If you already have an account ",
+                  "Already have an account ",
                   style: TextStyle(color: AppColors.hintTextColor),
                 ),
                 GestureDetector(
@@ -197,9 +197,10 @@ class _SignUpFormState extends State<SignUpForm> {
                             color: Colors.white,
                           )
                         : const Text(
-                            "Register",
-                            style: TextStyle(color: AppColors.textColor),
-                          ),
+                                  'Register',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                ),
                   ),
                 );
               },

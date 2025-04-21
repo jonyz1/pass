@@ -13,10 +13,18 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: AppColors.backgroundColor,
+        title: const Text(
+          'PASSME 🌐 TRANSLATOR',
+          style: TextStyle(color: Colors.white70, fontSize: 16),
+        ),
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
             child: BlocListener<LoginCubit, LoginState>(
               listener: (context, state) {
                 if (state.token != null) {
@@ -32,11 +40,6 @@ class LoginPage extends StatelessWidget {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'A2SV 🌐 TRANSLATOR',
-                        style: TextStyle(color: Colors.white70, fontSize: 16),
-                      ),
-                      const SizedBox(height: 40),
                       const Text(
                         'Sign In',
                         style: TextStyle(
@@ -66,37 +69,50 @@ class LoginPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 30),
                       // Email Field
-                      TextField(
+                      TextFormField(
                         controller: emailController,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: AppColors.textColor),
                         decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.grey[800],
-                          hintText: 'User@gmail.com',
-                          hintStyle: const TextStyle(color: Colors.white70),
-                          prefixIcon:
-                              const Icon(Icons.email, color: Colors.white70),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                          prefixIcon: Icon(Icons.email, color: AppColors.iconColor),
+                          hintText: 'Email',
+                          hintStyle: TextStyle(color: AppColors.hintTextColor),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.iconColor, width: 1.5),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.primaryColor, width: 2.0),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red, width: 1.5),
+                          ),
+                          focusedErrorBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red, width: 2.0),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),
                       // Password Field
-                      TextField(
+                      TextFormField(
                         controller: passwordController,
                         obscureText: true,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: AppColors.textColor),
                         decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.grey[800],
+                          prefixIcon: Icon(Icons.lock, color: AppColors.iconColor),
                           hintText: 'Password',
-                          hintStyle: const TextStyle(color: Colors.white70),
-                          prefixIcon:
-                              const Icon(Icons.lock, color: Colors.white70),
-                          suffixIcon: const Icon(Icons.visibility_off,
-                              color: Colors.white70),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                          hintStyle: TextStyle(color: AppColors.hintTextColor),
+                          suffixIcon: Icon(Icons.visibility_off, color: AppColors.iconColor),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.iconColor, width: 1.5),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.primaryColor, width: 2.0),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red, width: 1.5),
+                          ),
+                          focusedErrorBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red, width: 2.0),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 10),

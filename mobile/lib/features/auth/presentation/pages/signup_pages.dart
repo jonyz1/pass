@@ -12,7 +12,10 @@ class SignUpPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: AppColors.backgroundColor,
-        title: Image.asset('assets/images/logo.png'),
+        title: const Text(
+          'PASSME 🌐 TRANSLATOR',
+          style: TextStyle(color: Colors.white70, fontSize: 16),
+        ),
       ),
       body: const Center(
         child: SingleChildScrollView(
