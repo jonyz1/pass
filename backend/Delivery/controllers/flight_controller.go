@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	domain "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
-	usecases "github.com/A2SV/A2SV-2025-Internship-Pass-Me/usecases"
+	domain "github.com/shaloms4/Pass-Me-Core-Functionality/domain"
+	usecases "github.com/shaloms4/Pass-Me-Core-Functionality/usecases"
 
 	"github.com/gin-gonic/gin"
 )

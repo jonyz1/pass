@@ -5,35 +5,29 @@ import (
 	"log"
 	"os"
 
-	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/delivery/controllers"
-	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/delivery/routers"
-	repositories "github.com/A2SV/A2SV-2025-Internship-Pass-Me/repositories"
-	usecases "github.com/A2SV/A2SV-2025-Internship-Pass-Me/usecases"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/shaloms4/Pass-Me-Core-Functionality/delivery/controllers"
+	"github.com/shaloms4/Pass-Me-Core-Functionality/delivery/routers"
+	repositories "github.com/shaloms4/Pass-Me-Core-Functionality/repositories"
+	usecases "github.com/shaloms4/Pass-Me-Core-Functionality/usecases"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"golang.ngrok.com/ngrok"
-	"golang.ngrok.com/ngrok/config"
 )
 
 func main() {
-	// Load environment variables from .env file
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+	// Only load .env if running locally
+	if os.Getenv("RENDER") == "" {
+		err := godotenv.Load("./.env")
+		if err != nil {
+			log.Fatalf("Error loading .env file: %v", err)
+		}
 	}
 
 	// Get MongoDB URI from the environment variables
 	mongoURI := os.Getenv("MONGO_URI")
 	if mongoURI == "" {
 		log.Fatal("MONGO_URI is not set in the .env file")
-	}
-
-	// Get ngrok auth token from environment variables
-	ngrokToken := os.Getenv("NGROK_AUTH_TOKEN")
-	if ngrokToken == "" {
-		log.Fatal("NGROK_AUTH_TOKEN is not set in the .env file")
 	}
 
 	// Connect to MongoDB
@@ -66,20 +60,9 @@ func main() {
 	routers.SetupUserRoutes(r, userController)
 	routers.SetupFlightRoutes(r, flightController)
 
-	// Start ngrok tunnel
-	ctx := context.Background()
-	tunnel, err := ngrok.Listen(ctx,
-		config.HTTPEndpoint(),
-		ngrok.WithAuthtoken(ngrokToken),
-	)
-	if err != nil {
-		log.Fatalf("Failed to start ngrok tunnel: %v", err)
-	}
-	log.Printf("ngrok tunnel started at: %s", tunnel.URL())
-
-	// Start the server through ngrok
-	log.Println("Server is running through ngrok")
-	if err := r.RunListener(tunnel); err != nil {
+	// Start the server
+	log.Println("Server is running at :8080")
+	if err := r.Run(":8080"); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
