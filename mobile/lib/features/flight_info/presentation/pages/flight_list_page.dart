@@ -25,8 +25,12 @@ class _FlightListPageState extends State<FlightListPage> {
           );
         },
         backgroundColor: Colors.blue,
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Colors.white, // Make the + icon white
+        ),
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

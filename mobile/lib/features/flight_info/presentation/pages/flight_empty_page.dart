@@ -24,8 +24,12 @@ class _FlightEmptyPageState extends State<FlightEmptyPage> {
           );
         },
         backgroundColor: Colors.blue,
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Colors.white, // Make the + icon white
+        ),
       ),
+
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
