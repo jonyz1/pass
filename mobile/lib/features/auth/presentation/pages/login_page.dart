@@ -38,7 +38,7 @@ class LoginPage extends StatelessWidget {
               child: BlocBuilder<LoginCubit, LoginState>(
                 builder: (context, state) {
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
                         'Sign In',
@@ -48,26 +48,27 @@ class LoginPage extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
-                      Text.rich(
-                        TextSpan(
-                          text:
-                              "If you don't have an account register\nYou can ",
-                          style: TextStyle(color: Colors.white70),
-                          children: [
-                            TextSpan(
-                              text: 'Register Here!',
-                              style: TextStyle(color: Colors.blue),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.pushNamed(context,
-                                      '/signup'); // Navigate to signup page
-                                },
+                      Row(
+                        children: [
+                          Text(
+                            "Don't have an account ",
+                            style: TextStyle(color: AppColors.hintTextColor),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/signup');
+                            },
+                            child: const Text(
+                              "Register Here",
+                              style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 32),
                       // Email Field
                       TextFormField(
                         controller: emailController,
@@ -90,7 +91,7 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 16),
                       // Password Field
                       TextFormField(
                         controller: passwordController,
@@ -133,9 +134,10 @@ class LoginPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 24),
                       SizedBox(
                         width: double.infinity,
+                        height: 50,
                         child: ElevatedButton(
                           onPressed: () {
                             context.read<LoginCubit>().login(
@@ -144,10 +146,9 @@ class LoginPage extends StatelessWidget {
                                 );
                           },
                           style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            backgroundColor: const Color(0xFF3A86FF),
+                            backgroundColor: AppColors.primaryColor,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                           child: state.isLoading
@@ -160,66 +161,54 @@ class LoginPage extends StatelessWidget {
                                 ),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      const Row(
+                      const SizedBox(height: 32),
+                      Row(
                         children: [
-                          Expanded(child: Divider(color: Colors.white38)),
+                          const Expanded(child: Divider(color: AppColors.borderColor)),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Text('Or sign in with',
-                                style: TextStyle(color: Colors.white38)),
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Text(
+                              "Or sign in with",
+                              style: TextStyle(color: AppColors.hintTextColor),
+                            ),
                           ),
-                          Expanded(child: Divider(color: Colors.white38)),
+                          const Expanded(child: Divider(color: AppColors.borderColor)),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 16),
                       Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.facebook, color: Colors.blue, size: 36),
-              onPressed: () {
-                // Handle Facebook sign in
-                // context.read<SignUpBloc>().add(SignInWithFacebook());
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.apple, color: AppColors.textColor, size: 36),
-              onPressed: () {
-                // Handle Apple sign in
-                // context.read<SignUpBloc>().add(SignInWithApple());
-              },
-            ),
-            IconButton(
-              icon: Image.asset('assets/images/google_icon.png', width: 25),
-              onPressed: () {
-                // Handle Google sign in
-                // context.read<SignUpBloc>().add(SignInWithGoogle());
-              },
-              ),
-        ],
-      )
-                      ],
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.facebook, color: Colors.blue, size: 36),
+                            onPressed: () {
+                              // Handle Facebook sign in
+                              // context.read<SignUpBloc>().add(SignInWithFacebook());
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.apple, color: AppColors.textColor, size: 36),
+                            onPressed: () {
+                              // Handle Apple sign in
+                              // context.read<SignUpBloc>().add(SignInWithApple());
+                            },
+                          ),
+                          IconButton(
+                            icon: Image.asset('assets/images/google_icon.png', width: 25),
+                            onPressed: () {
+                              // Handle Google sign in
+                              // context.read<SignUpBloc>().add(SignInWithGoogle());
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
                   );
                 },
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _socialButton(IconData icon, String label) {
-    return ElevatedButton.icon(
-      onPressed: () {},
-      icon: FaIcon(icon, size: 18),
-      label: Text(label),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     );
   }
