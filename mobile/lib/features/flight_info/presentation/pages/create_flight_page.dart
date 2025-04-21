@@ -57,7 +57,7 @@ class _CreateFlightPageState extends State<CreateFlightPage> {
       'question2': '2. ለምን ጊዜ መቆየት ትፈልጋላችሁ?',
       'question3': '3. የመመለሻ ቲኬት አለዎት?',
       'question4': '4. በጉብኝትዎ ወቅት የምትቆዩበት ቦታ የት ነው?',
-      'question5': '5. ብቻዎ ነው የምትጓዙት ወይስ ከሌሎች ጋር?',
+      'question5': '5. ብቻዎን ነው የምትጓዙት ወይስ ከሌሎች ጋር?',
       'enterAnswer': 'መልስዎን እዚህ ያስገቡ',
     },
   };
