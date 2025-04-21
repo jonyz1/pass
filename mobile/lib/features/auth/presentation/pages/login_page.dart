@@ -3,11 +3,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile/core/theme/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../blocs/login_cubit.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool _obscurePassword = true;
+  bool _rememberMe = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRememberedEmail();
+  }
+
+  Future<void> _loadRememberedEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    final rememberedEmail = prefs.getString('remembered_email');
+    if (rememberedEmail != null) {
+      setState(() {
+        emailController.text = rememberedEmail;
+        _rememberMe = true;
+      });
+    }
+  }
+
+  Future<void> _saveRememberedEmail(String email) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (_rememberMe) {
+      await prefs.setString('remembered_email', email);
+    } else {
+      await prefs.remove('remembered_email');
+    }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +69,13 @@ class LoginPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
             child: BlocListener<LoginCubit, LoginState>(
-              listener: (context, state) {
+              listener: (context, state) async {
                 if (state.token != null) {
+                  if (_rememberMe) {
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setString('auth_token', state.token!);
+                    await _saveRememberedEmail(emailController.text);
+                  }
                   Navigator.pushReplacementNamed(context, '/flights/empty');
                 } else if (state.error != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -95,13 +143,23 @@ class LoginPage extends StatelessWidget {
                       // Password Field
                       TextFormField(
                         controller: passwordController,
-                        obscureText: true,
+                        obscureText: _obscurePassword,
                         style: const TextStyle(color: AppColors.textColor),
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.lock, color: AppColors.iconColor),
                           hintText: 'Password',
                           hintStyle: TextStyle(color: AppColors.hintTextColor),
-                          suffixIcon: Icon(Icons.visibility_off, color: AppColors.iconColor),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                              color: AppColors.iconColor,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: AppColors.iconColor, width: 1.5),
                           ),
@@ -122,7 +180,15 @@ class LoginPage extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Checkbox(value: false, onChanged: (val) {}),
+                              Checkbox(
+                                value: _rememberMe,
+                                onChanged: (val) {
+                                  setState(() {
+                                    _rememberMe = val ?? false;
+                                  });
+                                },
+                                activeColor: AppColors.primaryColor,
+                              ),
                               const Text("Remember Me",
                                   style: TextStyle(color: Colors.white70)),
                             ],
