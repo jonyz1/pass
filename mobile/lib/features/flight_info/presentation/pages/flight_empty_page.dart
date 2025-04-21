@@ -16,6 +16,16 @@ class _FlightEmptyPageState extends State<FlightEmptyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateFlightPage()),
+          );
+        },
+        backgroundColor: Colors.blue,
+        child: Icon(Icons.add),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -43,25 +53,14 @@ class _FlightEmptyPageState extends State<FlightEmptyPage> {
         unselectedItemColor: Colors.white,
         currentIndex: _selectedIndex,
         onTap: (index) {
-          if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CreateFlightPage()),
-            );
-          } else {
-            setState(() {
-              _selectedIndex = index;
-            });
-          }
+          setState(() {
+            _selectedIndex = index;
+          });
         },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Create',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

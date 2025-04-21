@@ -17,6 +17,16 @@ class _FlightListPageState extends State<FlightListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateFlightPage()),
+          );
+        },
+        backgroundColor: Colors.blue,
+        child: Icon(Icons.add),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -111,25 +121,14 @@ class _FlightListPageState extends State<FlightListPage> {
         unselectedItemColor: Colors.white,
         currentIndex: _selectedIndex,
         onTap: (index) {
-          if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CreateFlightPage()),
-            );
-          } else {
-            setState(() {
-              _selectedIndex = index;
-            });
-          }
+          setState(() {
+            _selectedIndex = index;
+          });
         },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Create',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
