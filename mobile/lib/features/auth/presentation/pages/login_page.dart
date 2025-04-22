@@ -45,6 +45,11 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Future<void> _saveAuthToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('auth_token', token);
+  }
+
   @override
   void dispose() {
     emailController.dispose();
@@ -71,11 +76,10 @@ class _LoginPageState extends State<LoginPage> {
             child: BlocListener<LoginCubit, LoginState>(
               listener: (context, state) async {
                 if (state.token != null) {
-                  if (_rememberMe) {
-                    final prefs = await SharedPreferences.getInstance();
-                    await prefs.setString('auth_token', state.token!);
-                    await _saveRememberedEmail(emailController.text);
-                  }
+                  // Always save the token
+                  await _saveAuthToken(state.token!);
+                  // Only save email if remember me is checked
+                  await _saveRememberedEmail(emailController.text);
                   Navigator.pushReplacementNamed(context, '/flights/empty');
                 } else if (state.error != null) {
                   ScaffoldMessenger.of(context).showSnackBar(

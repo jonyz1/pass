@@ -19,10 +19,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   final List<OnboardingScreenData> screens = [
     OnboardingScreenData(
-      title: 'A2SV TRANSLATOR',
+      title: 'PASSME 🌐 TRANSLATOR',
       description:
           'Easily input your travel details — origin, destination, length of stay, and purpose — all in your preferred language',
-      imagePath: 'assets/images/logo.png',
+      imagePath: '', // Empty string since we'll show text instead
     ),
     OnboardingScreenData(
       title: 'Smart Translation',
@@ -55,6 +55,43 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 },
                 itemCount: screens.length,
                 itemBuilder: (context, index) {
+                  if (index == 0) {
+                    // Custom first screen with large text
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 120,
+                            child: const Center(
+                              child: Text(
+                                'PASSME🌐TRANSLATOR',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.5,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 50),
+                          Text(
+                            screens[0].description,
+                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Colors.white,
+                              fontSize: 13,
+                              height: 1.5,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 0.15,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                   return OnboardingScreen(data: screens[index]);
                 },
               ),
